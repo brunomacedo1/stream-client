@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signIn, signOut } from '../actions';
-import axios from 'axios';
+
 
 class GoogleAuth extends Component {
   componentDidMount() {
