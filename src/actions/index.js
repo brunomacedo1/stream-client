@@ -1,3 +1,4 @@
+import history from '../history';
 import streams from '../api/streams';
 import {
   SIGN_IN, 
@@ -23,34 +24,37 @@ export const signOut = () => {
 };
 
 
-//Criar
+//Criar POST
 export const createStream = formValues =>  async (dispatch, getState) => {
   const { userId } = getState().auth
   const response = await streams.post('/streams', { ...formValues, userId});
-  
   dispatch({ type: CREATE_STREAM, payload: response.data })
+  history.push('/');
 };
 
-//Listar todas 
+//Listar todas  GET 
 export const fetchStreams = () => async dispatch => {
   const response = await streams.get('/streams');
   dispatch({type: FETCH_STREAMS, payload: response.data });
 };
 
-//Listar uma
+//Listar uma GET
 export const fetchStream = id => async dispatch => {
   const response = await streams.get(`/streams/${id}`);
   dispatch({ type: FETCH_STREAM, payload: response.data });
 };
 
-//Editar
-export const editStream = (id, formValues) => async dispatch => {
-  const response = await streams.put(`streams/${id}`, formValues);
+//Editar PUT OU PATCH;  O metódo PUT atualiza todas as propriedades, enquanto o PATCH apenas
+// algumas
+export const editStream = (id, formValues) => async (dispatch) => {
+  const response = await streams.patch(`streams/${id}`, formValues);
   dispatch({ type: EDIT_STREAM, payload: response.data })
+  history.push('/')
 };
 
-//Deletar
+//Deletar DELETE
 export const deleteStream = id => async dispatch => {
   await streams.delete(`/streams/${id}`);
   dispatch({ type: DELETE_STREAM, payload: id });
+  history.push('/')
 };
